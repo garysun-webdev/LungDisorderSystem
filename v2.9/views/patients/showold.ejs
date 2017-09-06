@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>PatientHome</title>
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+        <link rel="stylesheet" href="/stylesheets/main.css">
+        <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+        <script type="text/javascript">
+        
+        
+      google.charts.load('current', {'packages':['corechart','bar']});
+      google.charts.setOnLoadCallback(drawVisualization);
+      google.charts.setOnLoadCallback(drawChart);
+      google.charts.setOnLoadCallback(drawStuff);
+      
+      
+      function drawVisualization() {
+        // Some raw data (not necessarily accurate)
+        
+        // find the index
+        
+        // var selectedPeriod = [];
+        // selectedPeriod.push(['Day', 'Distance', 'Target']);
+        var chartDataFront = [['Day', 'Distance', 'Target']];
+        
+        <% currentRecords.forEach(function(currentRecord){ %>
+            chartDataFront.push(['<%= moment(currentRecord.date).format('MMDD') %>' , <%=currentRecord.distance%>, <%=currentRecord.target%>]); 
+        <% }); %>
+        
+        var dataBar = google.visualization.arrayToDataTable(chartDataFront);
+
+        var optionsBar = {
+          title : 'Monthly Coffee Production by Country',
+          vAxis: {title: 'Distance'},
+          hAxis: {title: 'Day'},
+          seriesType: 'bars',
+          series: {1: {type: 'line'}}
+        };
+
+        var chartBar = new google.visualization.ComboChart(document.getElementById('chart_div_bar'));
+        chartBar.draw(dataBar, optionsBar);
+      }
+          
+      
+    function drawChart() {
+        
+        var pieChartArray=[['Two Types','Num of Days']];
+        
+        
+        //Backend JS
+        
+        <% function findNumOfFinished(array){ %>
+            <% var number=0; %>
+            <% array.forEach(function(arr){ %>
+            <%  if(arr.distance>=arr.target){ %>
+            <%       number++ %>
+            <%   } %>
+            <% }); %>
+            <% return number; %>
+        <% } %>
+     
+        <% if(currentRecords[0]==null){ %>
+            <% var numFinished = 0; %> 
+            <% var numUnFinished = 0; %> 
+        <% } else { %>
+            <% var numFinished = findNumOfFinished(currentRecords); %>
+            <% var numUnfinished = currentRecords[0].period-numFinished; %>
+        <% } %>
+        
+        
+        
+        
+    
+        
+        //Backend JS FINISHED!!
+        pieChartArray.push(['Finished Days' , <%=numFinished%>]); 
+        pieChartArray.push(['Unfinished Days' , <%=numUnfinished%>]); 
+        
+        var dataPie = google.visualization.arrayToDataTable(pieChartArray
+        );
+        
+        
+        
+        var optionsPie = {
+          title: 'My Daily Activities'
+        };
+
+        var chartPie = new google.visualization.PieChart(document.getElementById('piechart'));
+
+        chartPie.draw(dataPie, optionsPie);
+      }
+      
+    function drawStuff() {
+        var data = new google.visualization.arrayToDataTable([
+          ['Age Range', 'Performance'],
+          ["Your Performance", <%= patient.average %>],
+          ["31-40", <%= average31 %>],
+          ["41-50", <%= average41 %>],
+          ["51-60", <%= average51 %>],
+          ["61-70", <%= average61 %>],
+          ["71-80", <%= average71 %>],
+          ["81-90", <%= average81 %>],
+        ]);
+
+        var options = {
+          title: 'Chess opening moves',
+          width: 900,
+          legend: { position: 'none' },
+          chart: { title: 'Chess opening moves',
+                   subtitle: 'popularity by percentage' },
+          bars: 'horizontal', // Required for Material Bar Charts.
+          axes: {
+            x: {
+              0: { side: 'top', label: 'Percentage'} // Top x-axis.
+            }
+          },
+          bar: { groupWidth: "90%" }
+        };
+
+        var chart = new google.charts.Bar(document.getElementById('top_x_div'));
+        chart.draw(data, options);
+      };
+    </script>
+    </head>
+    
+    
+    <body>
+  <nav class="navbar navbar-default">
+      <div class="container">
+          <div class="navbar-header">
+              <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+
+              <a class="navbar-brand" href="/">PatientHome</a>
+          </div>
+          <div id="navbar" class="collapse navbar-collapse">
+            <ul class="nav navbar-nav">
+              <li class="<%= typeof page !== 'undefined' && page === 'patients' ? 'active' : '' %>"><a href="/patients">Home</a></li>
+            </ul>
+            <ul class="nav navbar-nav navbar-right">
+                <% if(!currentUser){ %>
+                    <li class="<%= typeof page !== 'undefined' && page === 'login' ? 'active' : '' %>"><a href="/login">Login</a></li>
+                    <li class="<%= typeof page !== 'undefined' && page === 'register' ? 'active' : '' %>"><a href="/register">Sign Up</a></li>
+                <% } else { %>
+                    <li><a href="#">Signed In As <%= currentUser.username %></a></li>
+                    <li><a href="/logout">Logout</a></li>
+                <% } %>
+            </ul>
+          </div>
+      </div>
+  </nav>
+  
+  <div class="container">
+     <% if(error && error.length > 0) { %>
+       <div class="alert alert-danger"><p><%=error %></p></div>
+     <% } %>
+     
+     <% if(success && success.length > 0) { %>
+       <div class="alert alert-success"><p><%= success %></p></div>
+     <% } %>
+  </div>
+  <div class="container">
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-3">
+            <p class="lead"><%=patient.name%></p>
+            <div class="list-group">
+                <li class="list-group-item active">Info 1</li>
+                <li class="list-group-item">Info 2</li>
+                <li class="list-group-item">Info 3</li>
+            </div>
+    
+    
+    <div id="map"></div>
+    
+    
+            
+            
+    <div class="well">
+        <div class="text-right">
+            <a class="btn btn-success" href="/patients/<%= patient._id %>/notifications/new">Add New Notification</a>
+        </div>
+      <hr>
+      <% patient.notifications.forEach(function(notification){ %>
+      <div class="row">
+        <div class="col-md-12">
+          <span class="pull-right"><%= moment(notification.createdAt).fromNow() %></span>
+        <div>
+           <p><%= notification.text %> </p>
+          <hr>
+        </div>
+      </div>
+    </div>
+    <% }) %>
+  </div>
+  
+  
+            
+            
+            
+        </div>
+        <div class="col-md-9">
+            <div class="thumbnail">
+                <img class="img=responsive" src="<%= patient.image %>">
+                <div class="caption-full">
+                    <h4><%=patient.name%></h4>
+                    <p><%= patient.gender %></p>
+                    <p><%= patient.age %></p>
+                    <p><%= patient.description %></p>
+                    <a class="btn btn-warning" href="/patients/<%=patient._id%>/edit">Edit</a>
+                </div>
+            </div>
+            <div class = "well">
+                
+                <div class = "text-right">
+                    <a class="btn btn-success" href="/patients/<%=patient._id%>/records/new">Add Target</a>
+                    <form action="/patients/<%=patient._id%>/records/chart" method="POST">
+                        <input id = "year" type="number" name="year" placeholder="Year">
+                        <input id = "month" type="number" name="month" placeholder="Month">
+                        <button>Submit!</button>
+                    </form>
+                </div>
+                <hr>
+                <div id="top_x_div" style="width: 100%; height: 500px;"></div>
+                <div id="chart_div_bar" style="width: 100%; height: 500px;"></div>
+                <div id="piechart" style="width: 100%; height: 500px;"></div>
+                
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+
+      // This example creates a 2-pixel-wide red polyline showing the path of William
+      // Kingsford Smith's first trans-Pacific flight between Oakland, CA, and
+      // Brisbane, Australia.
+
+      function initMap() {
+       
+
+        
+        
+        var flightPlanCoordinates = [];
+        
+        //backend js starts
+        <% currentRecords.forEach(function(record){ %>
+           <% if(record.dateapp==(20+moment(Date.now()).format('YYMMDD'))){ %>
+                   <% for(var i = 0; i < record.coordinates.length;){ %>
+                       flightPlanCoordinates.push({lat:<%=record.coordinates[i]%>, lng:<%=record.coordinates[i+1]%>});
+                       <% i=i+2; %>
+                   <% } %>
+                    
+                    var map = new google.maps.Map(document.getElementById('map'), {
+                    zoom: 15,
+                    center: {lat: <%= record.coordinates[i-2] %>, lng: <%= record.coordinates[i-1] %>},
+                    mapTypeId: 'terrain'
+                    });
+                    
+           <% }; %>
+        <% }); %>
+        //backed js ends
+        
+        var flightPath = new google.maps.Polyline({
+          path: flightPlanCoordinates,
+          geodesic: true,
+          strokeColor: '#FF0000',
+          strokeOpacity: 1.0,
+          strokeWeight: 2
+        });
+
+        flightPath.setMap(map);
+      }
+    </script>
+    <script async defer
+    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAGZ10PwxxqzWXjUVgZrbUMA_f1PmNWFiw&callback=initMap">
+    </script>
+    

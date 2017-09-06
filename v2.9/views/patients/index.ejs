@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0, user-scalable=no">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="msapplication-tap-highlight" content="no">
+  <title>Patients | PatientHome</title>
+
+  <!-- Favicons-->
+  <link rel="icon" href="/images/favicon/favicon-32x32.png" sizes="32x32">
+  <!-- Favicons-->
+  <link rel="apple-touch-icon-precomposed" href="/images/favicon/apple-touch-icon-152x152.png">
+  <!-- For iPhone -->
+  <meta name="msapplication-TileColor" content="#00bcd4">
+  <meta name="msapplication-TileImage" content="images/favicon/mstile-144x144.png">
+  <!-- For Windows Phone -->
+
+
+  <!-- CORE CSS-->
+  <link href="/css/materialize.css" type="text/css" rel="stylesheet" media="screen,projection">
+  <link href="/css/style.css" type="text/css" rel="stylesheet" media="screen,projection">
+  <!-- Custome CSS-->    
+  <link href="/css/custom/custom.css" type="text/css" rel="stylesheet" media="screen,projection">
+
+  <!-- INCLUDED PLUGIN CSS ON THIS PAGE -->
+  <link href="/js/plugins/prism/prism.css" type="text/css" rel="stylesheet" media="screen,projection">
+  <link href="/js/plugins/perfect-scrollbar/perfect-scrollbar.css" type="text/css" rel="stylesheet" media="screen,projection">
+  <link href="/js/plugins/chartist-js/chartist.min.css" type="text/css" rel="stylesheet" media="screen,projection">
+  <link href="/js/plugins/magnific-popup/magnific-popup.css" type="text/css" rel="stylesheet" media="screen,projection">
+  </head>
+  
+  <body id="layouts-horizontal">
+    <!-- Start Page Loading -->
+    <div id="loader-wrapper">
+        <div id="loader"></div>        
+        <div class="loader-section section-left"></div>
+        <div class="loader-section section-right"></div>
+    </div>
+<!-- End Page Loading -->
+
+<!-- START HEADER -->
+    <header id="header" class="page-topbar">
+        <!-- start header nav-->
+        <div class="navbar-fixed">
+            <nav class="navbar-color">
+                <div class="nav-wrapper">
+                    <ul class="left">                      
+                      <li><h1 class="logo-wrapper"><a href="/patients" class="brand-logo darken-1"><img src="/images/materialize-logo.png" alt="materialize logo"></a> <span class="logo-text">Materialize</span></h1></li>
+                    </ul>
+                    <div class="header-search-wrapper hide-on-med-and-down">
+                        <i class="mdi-action-search"></i>
+                        <form action="/patients" method="GET" id="patient-search">
+                         <input type="text" name="search" class="header-search-input z-depth-2" style="width:88%" placeholder="Patient search...">
+                        </form>
+                    </div>
+                    
+                    <a href="#" data-activates="mobile-demo" class="button-collapse"><i class="mdi-navigation-menu"></i></a>
+                    <ul class="right hide-on-med-and-down">
+                        <% if(!currentUser){ %>
+                          <li class="<%= typeof page !== 'undefined' && page === 'login' ? 'active' : '' %>"><a href="/login">Login</a></li>
+                          <li class="<%= typeof page !== 'undefined' && page === 'register' ? 'active' : '' %>"><a href="/register">Sign Up</a></li>
+                        <% } else { %>
+                          <li><a href="/patients/new">New Patien</a></li>    
+                          <li><a href="#">Signed In As <%= currentUser.username %></a></li>
+                          <li><a href="/logout">Logout</a></li>
+                        <% } %>
+                    </ul>
+                    
+                </div>
+            </nav>
+          </div>
+        <!-- end header nav-->
+  </header>
+             
+     <div class="container">
+          <div class="section">
+            <!-- start blog list -->
+            <div id="blog-posts" class="row">
+                <% patients.forEach(function(patient){ %>
+                <div class="blog col s6 m4 l3" style="padding-bottom:20px">
+                    <div class="card small">
+                        <div class="card-image waves-effect waves-block waves-light">
+                            <a href="/patients/<%= patient._id %>"><img src="<%= patient.image %>" alt="blog-img">
+                            </a>
+                        </div>
+                        <div class="card-content" style="margin-top:10px">
+                        <span class="card-title activator grey-text text-darken-4"><%= patient.name %><i class="mdi-navigation-more-vert right"></i></span>
+                        <p>Gender: <%= patient.gender %></a>
+                        <p>Age: <%= patient.age %></a>
+                        </p>
+                      </div>
+                      <div class="card-reveal">
+                        <span class="card-title grey-text text-darken-4">Description <i class="mdi-navigation-close right"></i></span>
+                        <p><%= patient.description %></p>
+                      </div>
+                    </div>
+                </div>
+                <% }); %>
+         </div>
+    </div>
+</div>
+
+
+
+
+ <!-- ================================================
+    Scripts
+    ================================================ -->
+    
+    <!-- jQuery Library -->
+    <script type="text/javascript" src="/js/plugins/jquery-1.11.2.min.js"></script>    
+    <!--materialize js-->
+    <script type="text/javascript" src="/js/materialize.js"></script>
+    <!--prism-->
+    <script type="text/javascript" src="/js/plugins/prism/prism.js"></script>
+    <!--scrollbar-->
+    <script type="text/javascript" src="/js/plugins/perfect-scrollbar/perfect-scrollbar.min.js"></script>
+    <!-- chartist -->
+    <script type="text/javascript" src="/js/plugins/chartist-js/chartist.min.js"></script>   
+    <!-- masonry -->
+    <script src="/js/plugins/masonry.pkgd.min.js"></script>
+    <!-- imagesloaded -->
+    <script src="/js/plugins/imagesloaded.pkgd.min.js"></script>    
+    <!-- magnific-popup -->
+    <script type="text/javascript" src="/js/plugins/magnific-popup/jquery.magnific-popup.min.js"></script> 
+    <script type="text/javascript">
+      /*
+       * Masonry container for Gallery page
+       */
+      var $containerGallery = $(".masonry-gallery-wrapper");
+      $containerGallery.imagesLoaded(function() {
+        $containerGallery.masonry({
+            itemSelector: '.gallary-item img',
+           columnWidth: '.gallary-sizer',
+           isFitWidth: true
+        });
+      });
+
+      //popup-gallery
+      $('.popup-gallery').magnificPopup({
+        delegate: 'a',
+        type: 'image',
+        closeOnContentClick: true,    
+        fixedContentPos: true,
+        tLoading: 'Loading image #%curr%...',
+        mainClass: 'mfp-img-mobile mfp-no-margins mfp-with-zoom',
+        gallery: {
+          enabled: true,
+          navigateByImgClick: true,
+          preload: [0,1] // Will preload 0 - before current, and 1 after the current image
+        },
+        image: {
+          verticalFit: true,
+          tError: '<a href="%url%">The image #%curr%</a> could not be loaded.',
+          titleSrc: function(item) {
+            return item.el.attr('title') + '<small>by Marsel Van Oosten</small>';
+          },
+        zoom: {
+          enabled: true,
+          duration: 300 // don't foget to change the duration also in CSS
+        }
+        }
+      });
+    </script>
+    <!--plugins.js - Some Specific JS codes for Plugin Settings-->
+    <script type="text/javascript" src="/js/plugins.js"></script>
+    <!--custom-script.js - Add your own theme custom JS-->
+    <script type="text/javascript" src="/js/custom-script.js"></script>
+    <script src="/scripts/search.js" async defer></script>
+    <!--<script type="text/javascript">-->
+
+    
+    
+</body>
+
+</html>

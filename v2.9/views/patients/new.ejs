@@ -1,0 +1,400 @@
+<!--<div class="container">-->
+<!--    <div class="row">-->
+<!--        <h1 style="text-align: center">Create a New Patient</h1>-->
+<!--        <div style="width: 30%; margin: 25px auto;">-->
+<!--            <form action="/patients" method="POST", enctype="multipart/form-data">-->
+<!--                <div class="form-group">-->
+<!--                    <input class="form-control" type="text" name="name" placeholder="Name">-->
+<!--                </div>-->
+<!--                <div class="form-group">-->
+<!--                    <input class="form-control" type="text" name="gender" placeholder="Gender">-->
+<!--                </div>-->
+<!--                <div class="form-group">-->
+<!--                    <input class="form-control" type="number" name="age" placeholder="Age">-->
+<!--                </div>-->
+<!--                <div class="form-group">-->
+<!--                    <input class="form-control" type="email" name="email" placeholder="email">-->
+<!--                </div>-->
+<!--                <div class="form-group">-->
+<!--                    <input class="form-control" type="file" name="image">-->
+<!--                </div>-->
+<!--                <div class="form-group">-->
+<!--                    <input class="form-control" type="text" name="description" placeholder="Description">-->
+<!--                </div>-->
+<!--                <div class="form-group">-->
+<!--                    <button class="btn btn-lg btn-primary btn-block">Submit!</button>-->
+<!--                </div>-->
+<!--            </form>-->
+<!--            <a href="/patients">Go Back</a>-->
+<!--        </div>-->
+<!--    </div>-->
+<!--</div>-->
+
+
+<!DOCTYPE html>
+<html lang="en">
+
+<!--================================================================================
+	Item Name: Materialize - Material Design Admin Template
+	Version: 3.1
+	Author: GeeksLabs
+	Author URL: http://www.themeforest.net/user/geekslabs
+================================================================================ -->
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0, user-scalable=no">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="msapplication-tap-highlight" content="no">
+  <title>New Patient | PatientHome</title>
+
+  <!-- Favicons-->
+  <link rel="icon" href="/images/favicon/favicon-32x32.png" sizes="32x32">
+  <!-- Favicons-->
+  <link rel="apple-touch-icon-precomposed" href="/images/favicon/apple-touch-icon-152x152.png">
+  <!-- For iPhone -->
+  <meta name="msapplication-TileColor" content="#00bcd4">
+  <meta name="msapplication-TileImage" content="images/favicon/mstile-144x144.png">
+  <!-- For Windows Phone -->
+
+
+  <!-- CORE CSS-->
+  <link href="/css/materialize.css" type="text/css" rel="stylesheet" media="screen,projection">
+  <link href="/css/style.css" type="text/css" rel="stylesheet" media="screen,projection">
+  <!-- Custome CSS-->    
+  <link href="/css/custom/custom.css" type="text/css" rel="stylesheet" media="screen,projection">
+
+  <!-- INCLUDED PLUGIN CSS ON THIS PAGE -->
+  <link href="/js/plugins/prism/prism.css" type="text/css" rel="stylesheet" media="screen,projection">
+  <link href="/js/plugins/perfect-scrollbar/perfect-scrollbar.css" type="text/css" rel="stylesheet" media="screen,projection">
+  <link href="/js/plugins/chartist-js/chartist.min.css" type="text/css" rel="stylesheet" media="screen,projection">
+  <!--dropify-->
+  <link href="/js/plugins/dropify/css/dropify.min.css" type="text/css" rel="stylesheet" media="screen,projection">
+  
+  
+  <style type="text/css">
+  .input-field div.error{
+    position: relative;
+    top: -1rem;
+    left: 0rem;
+    font-size: 0.8rem;
+    color:#FF4081;
+    -webkit-transform: translateY(0%);
+    -ms-transform: translateY(0%);
+    -o-transform: translateY(0%);
+    transform: translateY(0%);
+  }
+  .input-field label.active{
+      width:100%;
+  }
+  .left-alert input[type=text] + label:after, 
+  .left-alert input[type=password] + label:after, 
+  .left-alert input[type=email] + label:after, 
+  .left-alert input[type=url] + label:after, 
+  .left-alert input[type=time] + label:after,
+  .left-alert input[type=date] + label:after, 
+  .left-alert input[type=datetime-local] + label:after, 
+  .left-alert input[type=tel] + label:after, 
+  .left-alert input[type=number] + label:after, 
+  .left-alert input[type=search] + label:after, 
+  .left-alert textarea.materialize-textarea + label:after{
+      left:0px;
+  }
+  .right-alert input[type=text] + label:after, 
+  .right-alert input[type=password] + label:after, 
+  .right-alert input[type=email] + label:after, 
+  .right-alert input[type=url] + label:after, 
+  .right-alert input[type=time] + label:after,
+  .right-alert input[type=date] + label:after, 
+  .right-alert input[type=datetime-local] + label:after, 
+  .right-alert input[type=tel] + label:after, 
+  .right-alert input[type=number] + label:after, 
+  .right-alert input[type=search] + label:after, 
+  .right-alert textarea.materialize-textarea + label:after{
+      right:70px;
+  }
+  </style>
+</head>
+
+<body id="layouts-horizontal">
+    <!-- Start Page Loading -->
+    <div id="loader-wrapper">
+        <div id="loader"></div>        
+        <div class="loader-section section-left"></div>
+        <div class="loader-section section-right"></div>
+    </div>
+<!-- End Page Loading -->
+
+<!-- START HEADER -->
+    <header id="header" class="page-topbar">
+        <!-- start header nav-->
+        <div class="navbar-fixed">
+            <nav class="navbar-color">
+                <div class="nav-wrapper">
+                    <ul class="left">                      
+                      <li><h1 class="logo-wrapper"><a href="/patients" class="brand-logo darken-1"><img src="/images/materialize-logo.png" alt="materialize logo"></a> <span class="logo-text">PatientHome</span></h1></li>
+                    </ul>
+                    <!--<div class="header-search-wrapper hide-on-med-and-down">-->
+                    <!--    <i class="mdi-action-search"></i>-->
+                    <!--    <input type="text" name="Search" class="header-search-input z-depth-2" placeholder="Explore Materialize"/>-->
+                    <!--</div>-->
+                    
+                    <!--<ul class="right hide-on-med-and-down">-->
+                    <!--  <li class="<%= typeof page !== 'undefined' && page === 'patients' ? 'active' : '' %>"><a href="/patients">Home</a></li>-->
+                    <!--</ul>-->
+                    
+                    <!--<ul class="right hide-on-med-and-down">-->
+                    <!--    <li><a href="javascript:void(0);" class="waves-effect waves-block waves-light translation-button"  data-activates="translation-dropdown"><img src="/images/flag-icons/United-States.png" alt="USA" /></a>-->
+                    <!--    </li>-->
+                    <!--    <li><a href="javascript:void(0);" class="waves-effect waves-block waves-light toggle-fullscreen"><i class="mdi-action-settings-overscan"></i></a>-->
+                    <!--    </li>-->
+                    <!--    <li><a href="javascript:void(0);" class="waves-effect waves-block waves-light notification-button" data-activates="notifications-dropdown"><i class="mdi-social-notifications"><small class="notification-badge">5</small></i></a>-->
+                    <!--    </li>                        -->
+                    <!--    <li><a href="#" data-activates="chat-out" class="waves-effect waves-block waves-light chat-collapse"><i class="mdi-communication-chat"></i></a>-->
+                    <!--    </li>-->
+                    <!--</ul>-->
+                    
+                    
+                    <ul class="right">
+                        <% if(!currentUser){ %>
+                          <li class="<%= typeof page !== 'undefined' && page === 'login' ? 'active' : '' %>"><a href="/login">Login</a></li>
+                          <li class="<%= typeof page !== 'undefined' && page === 'register' ? 'active' : '' %>"><a href="/register">Sign Up</a></li>
+                        <% } else { %>
+                          <li><a href="#">Signed In As <%= currentUser.username %></a></li>
+                          <li><a href="/logout">Logout</a></li>
+                        <% } %>
+                    </ul>
+                    <!-- translation-button -->
+                    <!--<ul id="translation-dropdown" class="dropdown-content">-->
+                    <!--  <li>-->
+                    <!--    <a href="#!"><img src="/images/flag-icons/United-States.png" alt="English" />  <span class="language-select">English</span></a>-->
+                    <!--  </li>-->
+                    <!--  <li>-->
+                    <!--    <a href="#!"><img src="/images/flag-icons/France.png" alt="French" />  <span class="language-select">French</span></a>-->
+                    <!--  </li>-->
+                    <!--  <li>-->
+                    <!--    <a href="#!"><img src="/images/flag-icons/China.png" alt="Chinese" />  <span class="language-select">Chinese</span></a>-->
+                    <!--  </li>-->
+                    <!--  <li>-->
+                    <!--    <a href="#!"><img src="/images/flag-icons/Germany.png" alt="German" />  <span class="language-select">German</span></a>-->
+                    <!--  </li>-->
+                      
+                    <!--</ul>-->
+                    <!-- notifications-dropdown -->
+                    
+                </div>
+            </nav>
+          </div>
+        <!-- end header nav-->
+  </header>
+  
+<!-- START MAIN -->
+  <div id="main" style="padding:0">
+    <!-- START WRAPPER -->
+    <div class="wrapper">
+      <div class="container">
+
+    
+      <div id="default-validation" class="section">
+              <div class="row">
+                  <!--Form validation with placeholder-->
+                  <div class="col s12 m12 l8">
+                    <div class="card-panel">
+                        <h4 class="header2">Add New Patient</h4>
+                        <p>Fill in the information of New Patient</p>
+                        <!--add .left-alert to show messages left side-->
+                        <div class="row">
+                            <form class="col s12 left-alert" action="/patients" method="POST", enctype="multipart/form-data">
+                              <div class="row">
+                                  <div class="input-field col s12">
+                                    <input id="first_input1" type="text" class="validate" name="name" required="true" placeholder="John Doe">
+                                    <label for="first_input1" data-error="Please enter first name.">Name</label>
+                                  </div>
+                              </div>
+                              <div class="row">
+                              <div class="col s12">
+                                <label for="genter_select">Gender</label>
+                                <p>
+                                <input required="true" name="gender" type="radio" id="gender_male" data-error=".errorTxt8" value="Male"/>
+                                <label for="gender_male">Male</label>
+                                </p>
+                                <p>
+                                <input required="true" name="gender" type="radio" id="gender_female" value="Female"/>
+                                <label for="gender_female">Female</label>
+                                </p>
+                            	</div>
+                              </div>
+                              
+                              <div class="row">
+                                  <div class="input-field col s12">
+                                    <input name = "age" id="age_input1" type="number" class="validate" placeholder="35" required="true">
+                                    <label for="age_input1" data-error="Please enter your age.">Age</label>
+                                  </div>
+                              </div>
+                              <div class="row">
+                                <div class="input-field col s12">
+                                  <input required="true" id="email_input1" type="email" class="validate" placeholder="john@domainname.com" name="email">
+                                  <label for="email_input1" class="" data-error="Please enter valid email." data-success="I Like it!">Email</label>
+                                </div>
+                              </div>
+                              
+                              <div class="row">
+                                <div class="input-field col s12">
+                                  <textarea required="true" name="description" id="message1" class="materialize-textarea validate" length="500" placeholder="Oh WoW! Let me check this one too."></textarea>
+                                  <label for="message1" class="">Description</label>
+                                </div>
+                             </div>                  
+                             
+                              <div id="file-upload" class="section">
+                                <div class="col s12 m8 l9">
+                                    <label for="image" class="">Image</label>
+                                    <input type="file" name="image" id="input-file-now" class="dropify" data-default-file="" />
+                                </div>
+                              </div>
+                            
+                            <div class="row">
+                              <div class="input-field col s12">
+                                <button class="btn waves-effect waves-light right" type="submit" name="action">Submit
+                                  <i class="mdi-content-send right"></i>
+                                </button>
+                              </div>
+                            </div>
+                        </form>
+                        </div>
+                    </div>
+                  </div>
+                </div>
+                  
+      </div>
+    <!-- END WRAPPER -->
+    </div>
+  </div>
+</div>
+  <!-- END MAIN -->
+
+<!-- START FOOTER -->
+  <footer class="page-footer" style="padding:0">
+    <div class="footer-copyright">
+      <div class="container" >
+        <span>Copyright © 2017 <a class="grey-text text-lighten-4" href="https://webdevzero2hero-eaglegogogo.c9users.io/" target="_blank">Yige Sun</a> All rights reserved.</span>
+        <span class="right"> Design and Developed by <a class="grey-text text-lighten-4" href="https://webdevzero2hero-eaglegogogo.c9users.io">Yige Sun</a></span>
+        </div>
+    </div>
+  </footer>
+    <!-- END FOOTER -->
+
+
+
+    <!-- ================================================
+    Scripts
+    ================================================ -->
+    
+    <!-- jQuery Library -->
+    <script type="text/javascript" src="/js/plugins/jquery-1.11.2.min.js"></script>    
+    <!--angularjs-->
+    <script type="text/javascript" src="/js/plugins/angular.min.js"></script>
+    <!--materialize js-->
+    <script type="text/javascript" src="/js/materialize.js"></script>
+    <!--prism -->
+    <script type="text/javascript" src="/js/plugins/prism/prism.js"></script>
+    <!--scrollbar-->
+    <script type="text/javascript" src="/js/plugins/perfect-scrollbar/perfect-scrollbar.min.js"></script>
+    <!-- chartist -->
+    <script type="text/javascript" src="/js/plugins/chartist-js/chartist.min.js"></script>
+    
+    <!-- chartist -->
+    <script type="text/javascript" src="/js/plugins/jquery-validation/jquery.validate.min.js"></script>
+    <script type="text/javascript" src="/js/plugins/jquery-validation/additional-methods.min.js"></script>
+    
+    <!-- dropify -->
+    <script type="text/javascript" src="/js/plugins/dropify/js/dropify.min.js"></script>
+    
+    <!--plugins.js - Some Specific JS codes for Plugin Settings-->
+    <script type="text/javascript" src="/js/plugins.js"></script>
+    <!--custom-script.js - Add your own theme custom JS-->
+    <script type="text/javascript" src="/js/custom-script.js"></script>
+    
+    <script type="text/javascript">
+    $("#formValidate").validate({
+        rules: {
+            uname: {
+                required: true,
+                minlength: 5
+            },
+            cemail: {
+                required: true,
+                email:true
+            },
+            password: {
+				required: true,
+				minlength: 5
+			},
+			cpassword: {
+				required: true,
+				minlength: 5,
+				equalTo: "#password"
+			},
+			curl: {
+                required: true,
+                url:true
+            },
+            crole:"required",
+            ccomment: {
+				required: true,
+				minlength: 15
+            },
+            cgender:"required",
+			cagree:"required",
+        },
+        //For custom messages
+        messages: {
+            uname:{
+                required: "Enter a username",
+                minlength: "Enter at least 5 characters"
+            },
+            curl: "Enter your website",
+        },
+        errorElement : 'div',
+        errorPlacement: function(error, element) {
+          var placement = $(element).data('error');
+          if (placement) {
+            $(placement).append(error)
+          } else {
+            error.insertAfter(element);
+          }
+        }
+     });
+    </script>
+    
+    <script type="text/javascript">
+        $(document).ready(function(){
+            // Basic
+            $('.dropify').dropify();
+
+            // Translated
+            $('.dropify-fr').dropify({
+                messages: {
+                    default: 'Glissez-déposez un fichier ici ou cliquez',
+                    replace: 'Glissez-déposez un fichier ou cliquez pour remplacer',
+                    remove:  'Supprimer',
+                    error:   'Désolé, le fichier trop volumineux'
+                }
+            });
+
+            // Used events
+            var drEvent = $('.dropify-event').dropify();
+
+            drEvent.on('dropify.beforeClear', function(event, element){
+                return confirm("Do you really want to delete \"" + element.filename + "\" ?");
+            });
+
+            drEvent.on('dropify.afterClear', function(event, element){
+                alert('File deleted');
+            });
+        });
+    </script>
+    
+    
+</body>
+
+</html>

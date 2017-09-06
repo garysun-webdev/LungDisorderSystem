@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>PatientHome</title>
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+        <link rel="stylesheet" href="/stylesheets/main.css">
+        <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+        <script type="text/javascript">
+        
+      google.charts.load('current', {'packages':['corechart']});
+      google.charts.setOnLoadCallback(drawVisualization);
+      //google.charts.load('current', {'packages':['corechart']});
+      google.charts.setOnLoadCallback(drawChart);
+      
+      
+      function drawVisualization() {
+        // Some raw data (not necessarily accurate)
+        
+        // find the index
+        
+        // var selectedPeriod = [];
+        // selectedPeriod.push(['Day', 'Distance', 'Target']);
+        var chartDataFront = [['Day', 'Distance', 'Target']];
+        //BackendJS
+        <% records.forEach(function(record){ %>
+            chartDataFront.push(['<%= moment(record.date).format('MMDD') %>' , <%=record.distance%>, <%=record.target%>]); 
+        <% }); %>
+        
+        var dataBar = google.visualization.arrayToDataTable(chartDataFront);
+
+    var optionsBar = {
+      title : 'Performance in Month',
+      vAxis: {title: 'Distance'},
+      hAxis: {title: 'Day'},
+      seriesType: 'bars',
+      series: {1: {type: 'line'}}
+    };
+
+    var chartBar = new google.visualization.ComboChart(document.getElementById('chart_div_bar'));
+    chartBar.draw(dataBar, optionsBar);
+  }
+      
+      
+    function drawChart() {
+        
+        var pieChartArray=[['Two Types','Num of Days']];
+        
+        
+        //Backend JS
+        
+        
+        <% function findNumOfFinished(array){ %>
+            <% var number=0; %>
+            <% array.forEach(function(arr){ %>
+            <%  if(arr.distance>=arr.target){ %>
+            <%       number++ %>
+            <%   } %>
+            <% }); %>
+            <% return number; %>
+        <% } %>
+     
+        <% var numFinished = findNumOfFinished(records); %> 
+        
+        <% var numUnfinished = records.length-numFinished; %>
+        
+        //Backend JS FINISHED!!
+        pieChartArray.push(['Good Days' , <%=numFinished%>]); 
+        pieChartArray.push(['Bad Days' , <%=numUnfinished%>]); 
+        
+        var dataPie = google.visualization.arrayToDataTable(pieChartArray
+        );
+        
+        
+        
+        var optionsPie = {
+          title: 'Good & Bad Days.'
+        };
+
+        var chartPie = new google.visualization.PieChart(document.getElementById('piechart'));
+
+        chartPie.draw(dataPie, optionsPie);
+      }
+      
+    
+    </script>
+
+      
+    </head>
+    <body>
+                  <div id="chart_div_bar" style="width: 100%; height: 500px;"></div>
+                <div id="piechart" style="width: 100%; height: 500px;"></div>
+    </body>
+    </head>

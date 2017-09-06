@@ -1,0 +1,679 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<!--================================================================================
+	Item Name: Materialize - Material Design Admin Template
+	Version: 3.1
+	Author: GeeksLabs
+	Author URL: http://www.themeforest.net/user/geekslabs
+================================================================================ -->
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0, user-scalable=no">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="msapplication-tap-highlight" content="no">
+  <title><%= patient.name %>'s page | PatientHome</title>
+
+  <!-- Favicons-->
+  <link rel="icon" href="/images/favicon/favicon-32x32.png" sizes="32x32">
+  <!-- Favicons-->
+  <link rel="apple-touch-icon-precomposed" href="/images/favicon/apple-touch-icon-152x152.png">
+  <!-- For iPhone -->
+  <meta name="msapplication-TileColor" content="#00bcd4">
+  <meta name="msapplication-TileImage" content="/images/favicon/mstile-144x144.png">
+  <!-- For Windows Phone -->
+
+
+  <!-- CORE CSS-->
+  
+  <link href="/css/materialize.css" type="text/css" rel="stylesheet" media="screen,projection">
+  <link href="/css/style.css" type="text/css" rel="stylesheet" media="screen,projection">
+    <!-- Custome CSS-->    
+    <link href="/css/custom/custom.css" type="text/css" rel="stylesheet" media="screen,projection">
+
+
+  <!-- INCLUDED PLUGIN CSS ON THIS PAGE -->
+  <link href="/js/plugins/prism/prism.css" type="text/css" rel="stylesheet" media="screen,projection">
+  <link href="/js/plugins/perfect-scrollbar/perfect-scrollbar.css" type="text/css" rel="stylesheet" media="screen,projection">
+  <link href="/js/plugins/chartist-js/chartist.min.css" type="text/css" rel="stylesheet" media="screen,projection">
+</head>
+
+<body>
+  <!-- Start Page Loading -->
+  <div id="loader-wrapper">
+      <div id="loader"></div>        
+      <div class="loader-section section-left"></div>
+      <div class="loader-section section-right"></div>
+  </div>
+  <!-- End Page Loading -->
+
+  <!-- //////////////////////////////////////////////////////////////////////////// -->
+
+  <!-- START HEADER -->
+   <header id="header" class="page-topbar">
+        <!-- start header nav-->
+        <div class="navbar-fixed">
+            <nav class="navbar-color">
+                <div class="nav-wrapper">
+                    <ul class="left">                      
+                      <li><h1 class="logo-wrapper"><a href="/patients" class="brand-logo darken-1"><img src="/images/materialize-logo.png" alt="materialize logo"></a> <span class="logo-text">Materialize</span></h1></li>
+                    </ul>
+                    <a href="#" data-activates="mobile-demo" class="button-collapse"><i class="mdi-navigation-menu"></i></a>
+                    <ul class="right hide-on-med-and-down">
+                        <% if(!currentUser){ %>
+                          <li class="<%= typeof page !== 'undefined' && page === 'login' ? 'active' : '' %>"><a href="/login">Login</a></li>
+                          <li class="<%= typeof page !== 'undefined' && page === 'register' ? 'active' : '' %>"><a href="/register">Sign Up</a></li>
+                        <% } else { %>
+                          <li><a href="/patients/new">New Patien</a></li>    
+                          <li><a href="#">Signed In As <%= currentUser.username %></a></li>
+                          <li><a href="/logout">Logout</a></li>
+                        <% } %>
+                    </ul>
+                    
+                </div>
+            </nav>
+          </div>
+        <!-- end header nav-->
+  </header>
+  
+  <!-- //////////////////////////////////////////////////////////////////////////// -->
+
+  <!-- START MAIN -->
+  <div id="main" style="padding-left:0;">
+    <!-- START WRAPPER -->
+    <div class="wrapper">
+        <section id="content">        
+
+        <!--start container-->
+        <div class="container">
+
+          <div id="profile-page" class="section">
+            <!-- profile-page-header -->
+            <div id="profile-page-header" class="card">
+                <div class="card-image waves-effect waves-block waves-light">
+                    <img class="" src="/images/user-profile-bg.jpg" alt="user background">                    
+                </div>
+                <figure class="card-profile-image">
+                    <% if(patient.gender == "Male") { %>
+                    <img src="/images/male-avatar.jpg" alt="profile image" class="circle z-depth-2 responsive-img">
+                    <% } else { %>
+                    <img src="/images/female-avatar.jpg" alt="profile image" class="circle z-depth-2 responsive-img">
+                    <% } %>
+                </figure>
+                <div class="card-content">
+                  <div class="row">                    
+                    <div class="col s3 offset-s2">                        
+                        <h4 class="card-title grey-text text-darken-4"><%= patient.name %></h4>
+                        <p class="medium-small grey-text">Name</p>                        
+                    </div>
+                    <div class="col s2 center-align">
+                        <h4 class="card-title grey-text text-darken-4"><%= patient.gender %></h4>
+                        <p class="medium-small grey-text">Gender</p>                        
+                    </div>
+                    <div class="col s2 center-align">
+                        <h4 class="card-title grey-text text-darken-4"><%= patient.age %></h4>
+                        <p class="medium-small grey-text">Age</p>                        
+                    </div>                    
+                    <div class="col s2 center-align">
+                        <h4 class="card-title grey-text text-darken-4"><%= Number(patient.average).toFixed(2) %> km</h4>
+                        <p class="medium-small grey-text">Average Distance</p>                        
+                    </div>                    
+                    <div class="col s1 right-align">
+                      <a class="btn-floating waves-effect waves-light darken-2 right" href="/patients/<%=patient._id%>/edit">
+                          <i class="mdi-action-perm-identity"></i>
+                      </a>
+                    </div>
+                  </div>
+                </div>
+                
+            </div>
+            <!--/ profile-page-header -->
+            
+            <!-- profile-page-content -->
+            <div id="profile-page-content" class="row">
+              <!-- profile-page-sidebar-->
+              <div id="profile-page-sidebar" class="col s12 m3">
+                <!-- Profile About  -->
+                <div class="card light-blue">
+                  <div class="card-content white-text">
+                    <span class="card-title">Description</span>
+                    <p><%= patient.description %></p>
+                  </div>                  
+                </div>
+                <!-- Profile About  -->
+
+                <!-- Profile About Details  -->
+                <!--<ul id="profile-page-about-details" class="collection z-depth-1">-->
+                <!--  <li class="collection-item">-->
+                <!--    <div class="row">-->
+                <!--      <div class="col s5 grey-text darken-1"><i class="mdi-action-wallet-travel"></i> Project</div>-->
+                <!--      <div class="col s7 grey-text text-darken-4 right-align">ABC Name</div>-->
+                <!--    </div>-->
+                <!--  </li>-->
+                <!--  <li class="collection-item">-->
+                <!--    <div class="row">-->
+                <!--      <div class="col s5 grey-text darken-1"><i class="mdi-social-poll"></i> Skills</div>-->
+                <!--      <div class="col s7 grey-text text-darken-4 right-align">HTML, CSS</div>-->
+                <!--    </div>-->
+                <!--  </li>-->
+                <!--  <li class="collection-item">-->
+                <!--    <div class="row">-->
+                <!--      <div class="col s5 grey-text darken-1"><i class="mdi-social-domain"></i> Lives in</div>-->
+                <!--      <div class="col s7 grey-text text-darken-4 right-align">NY, USA</div>-->
+                <!--    </div>-->
+                <!--  </li>-->
+                <!--  <li class="collection-item">-->
+                <!--    <div class="row">-->
+                <!--      <div class="col s5 grey-text darken-1"><i class="mdi-social-cake"></i> Birth date</div>-->
+                <!--      <div class="col s7 grey-text text-darken-4 right-align">18th June, 1991</div>-->
+                <!--    </div>-->
+                <!--  </li>-->
+                <!--</ul>-->
+                <!--/ Profile About Details  -->
+                <!-- Map Card -->
+                <div id="map"></div>
+                <div class="map-card">
+                    <div class="card">
+                        <div class="card-image waves-effect waves-block waves-light">
+                            <div id="map-canvas" data-lat="40.747688" data-lng="-74.004142"></div>
+                            <!--<div id="map"></div>-->
+                        </div>
+                        <!--<div class="card-content">                    -->
+                        <!--    <a class="btn-floating activator btn-move-up waves-effect waves-light darken-2 right">-->
+                        <!--        <i class="mdi-maps-pin-drop"></i>-->
+                        <!--    </a>-->
+                        <!--    <h4 class="card-title grey-text text-darken-4"><a href="#" class="grey-text text-darken-4">Company Name LLC</a>-->
+                        <!--    </h4>-->
+                        <!--    <p class="blog-post-content">Some more information about this company.</p>-->
+                        <!--</div>-->
+                    </div>
+                </div>
+                <!-- Map Card -->
+                
+                <!-- Profile About  -->
+                <div class="card amber darken-2">
+                  <div class="card-content white-text center-align">
+                    <p class="card-title"><i class="mdi-social-group-add"></i> <%= patient.notifications.length %></p>
+                    <p>Notifications</p>
+                  </div>                  
+                </div>
+                <!-- Profile About  -->
+
+                <!-- Profile feed  -->
+                <ul id="profile-page-about-feed" class="collection z-depth-1">
+                  <% for(var i=patient.notifications.length-1;i>=0;i--){ %>
+                    <li class="collection-item avatar">
+                        <i class="mdi-action-assessment circle green"></i>
+                        <p><%= patient.notifications[i].text %>
+                          <br> <span class="ultra-small"><%= moment(patient.notifications[i].createdAt).fromNow() %></span>
+                        </p>
+                      </li>
+                  <% } %>
+                  <!--<li class="collection-item avatar">-->
+                  <!--  <i class="mdi-action-assessment circle green"></i>-->
+                  <!--  <span class="title">Project Title</span>-->
+                  <!--  <p>Task assigned to new changes.-->
+                  <!--    <br> <span class="ultra-small">Second Line</span>-->
+                  <!--  </p>-->
+                  <!--  <a href="#!" class="secondary-content"><i class="mdi-action-grade"></i></a>-->
+                  <!--</li>-->
+                  <!--<li class="collection-item avatar">-->
+                  <!--  <i class="mdi-action-assessment circle green"></i>-->
+                  <!--  <span class="title">New Project</span>-->
+                  <!--  <p>First Line of Project Work -->
+                  <!--    <br> <span class="ultra-small">Second Line</span>-->
+                  <!--  </p>-->
+                  <!--  <a href="#!" class="secondary-content"><i class="mdi-social-domain"></i></a>-->
+                  <!--</li>-->
+                  <!--<li class="collection-item avatar">-->
+                  <!--  <i class="mdi-action-assessment circle green"></i>-->
+                  <!--  <span class="title">New Payment</span>-->
+                  <!--  <p>Last UK Project Payment-->
+                  <!--    <br> <span class="ultra-small">$ 3,684.00</span>-->
+                  <!--  </p>-->
+                  <!--  <a href="#!" class="secondary-content"><i class="mdi-editor-attach-money"></i></a>-->
+                  <!--</li>-->
+                  <!--<li class="collection-item avatar">-->
+                  <!--  <i class="mdi-action-assessment circle green"></i>-->
+                  <!--  <span class="title">Latest News</span>-->
+                  <!--  <p>company management news-->
+                  <!--    <br> <span class="ultra-small">Second Line</span>-->
+                  <!--  </p>-->
+                  <!--  <a href="#!" class="secondary-content"><i class="mdi-action-track-changes"></i></a>-->
+                  <!--</li>-->
+                </ul>
+                <!-- Profile feed  -->
+                
+                
+
+              </div>
+              
+              <div id="profile-page-wall" class="col s12 m9">
+                <!-- profile-page-wall-share -->
+                <div id="profile-page-wall-share" class="row">
+                  <div class="col s12">
+                    <ul class="tabs tab-profile z-depth-1 light-blue">
+                      <li class="tab col s4"><a class="white-text waves-effect waves-light active" href="#UpdateStatus"><i class="mdi-editor-border-color"></i>Send Notification</a>
+                      </li>
+                      <li class="tab col s4"><a class="white-text waves-effect waves-light active" href="#AddSession"><i class="mdi-editor-border-color"></i>Add Session</a>
+                      </li>
+                      <li class="tab col s4"><a class="white-text waves-effect waves-light" href="#CreateAlbum"><i class="mdi-image-photo-album"></i> More Data</a>
+                      </li>                      
+                    </ul>
+                    <!-- UpdateStatus-->
+                    <div id="UpdateStatus" class="tab-content col s12  grey lighten-4">
+                      <div class="row">
+                        <div class="col s2">
+                          <% if(patient.gender == "Male") { %>
+                            <img src="/images/male-avatar.jpg" alt="" class="circle responsive-img valign profile-image-post">
+                            <% } else { %>
+                            <img src="/images/female-avatar.jpg" alt="" class="circle responsive-img valign profile-image-post">
+                            <% } %>
+                          
+                        </div>
+                        <div class="input-field col s10">
+                          
+                          <form action="/patients/<%= patient._id %>/notifications" method="POST">
+                                  <textarea id="textarea" row="2" class="materialize-textarea" name="text" required="true"></textarea>
+                                  <!--<input class="form-control materialize-textarea" type="text" name="text" placeholder="text">-->
+                                  <div class="col s12 m12 right-align">
+                                  <button class="waves-effect waves-light btn"><i class="mdi-maps-rate-review left"></i>Submit!</button>
+                                  </div>
+                                  <label for="textarea" class="">Say something to <%= patient.name %></label>
+                          </form>
+                            
+                        </div>
+                      </div>
+                      
+                    </div>
+                    
+                    <!-- Add Session-->
+                    <div id="AddSession" class="tab-content col s12  grey lighten-4">
+                      <div class="row">
+                        <div class="col s2">
+                          <% if(patient.gender == "Male") { %>
+                            <img src="/images/male-avatar.jpg" alt="" class="circle responsive-img valign profile-image-post">
+                            <% } else { %>
+                            <img src="/images/female-avatar.jpg" alt="" class="circle responsive-img valign profile-image-post">
+                            <% } %>
+                        </div>
+                        <div class="input-field col s10">
+                          
+                          <form action="/patients/<%= patient._id %>/records" method="POST">
+                                <div class="input-field col s12">
+                                  <p></p>
+                                  <input class="" type="date" name="date" placeholder="Start Date">
+                                  <label for="date" >Start Date</label>
+                                </div>
+                                <div class="input-field col s12">
+                                  <input class="" type="number" name="period" placeholder="Period Length: Days">
+                                  <label for="period">Period Length</label>
+                                </div>
+                                <div class="input-field col s12">
+                                  <input class="" type="number" name="target" placeholder="Target: km/Day">
+                                  <label for="target">Target</label>
+                                </div>
+                                  <div class="col s12 m12 right-align">
+                                  <button class="waves-effect waves-light btn"><i class="mdi-maps-rate-review left"></i>Submit!</button>
+                                  </div>
+                          </form>
+                            
+                        </div>
+                      </div>
+                      
+                    </div>
+                    <!-- CreateAlbum -->
+                    <div id="CreateAlbum" class="tab-content col s12  grey lighten-4">
+                      <div class="row">
+                        <div class="col s2">
+                          <% if(patient.gender == "Male") { %>
+                            <img src="/images/male-avatar.jpg" alt="" class="circle responsive-img valign profile-image-post">
+                            <% } else { %>
+                            <img src="/images/female-avatar.jpg" alt="" class="circle responsive-img valign profile-image-post">
+                            <% } %>
+                        </div>
+                        <div class="input-field col s10">
+                          <form action="/patients/<%=patient._id%>/records/chart" method="POST">
+                                <div class="input-field col s12">
+                                  <textarea id="textarea" class="materialize-textarea" name="year"></textarea>
+                                  <label for="year" >Year</label>
+                                </div>
+                                <div class="input-field col s12">
+                                  <textarea id="textarea" class="materialize-textarea" name="month"></textarea>
+                                  <label for="month">Month</label>
+                                </div>
+                                <div class="col s12 m12 right-align">
+                                <button class="waves-effect waves-light btn"><i class="mdi-maps-rate-review left"></i>Submit!</button>
+                                </div>
+                          </form>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <!--/ profile-page-wall-share -->
+                
+                <!-- profile-page-wall-posts -->
+        <div id="profile-page-wall-post">
+                    <!--chartjs-->
+            <div id="chartjs" class="section">
+              <h4 class="header">Everyday Performance</h4>
+              <div class="row">
+                <div class="col s12 m4 l3">
+                  <p>This line chart shows the <%= patient.name%>'s performance in the latest session.</p>
+                  <p>X: days in session</p>
+                  <p>Y: <span style="color:#dadddf">"Target"</span> and <span style="color:#a2c3d2">"Walking distance"</span> for everyday</p>
+                </div>
+                <div class="col s12 m8 l9">
+                  <div class="sample-chart-wrapper">
+                    <canvas id="lineChartSample" height="120"></canvas>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="divider"></div>
+            <div id="chartjs-pie-chart" class="section">
+              <h4 class="header">Good & Bad days</h4>
+              <div class="row">
+                <div class="col s12 m4 l3">
+                  <p><span style="color:#55c6c4">"Good Days"</span>: The days that <%= patient.name%> reached the target.</p>
+                  <p><span style="color:#f55258">"Bay Days"</span>: The days that <%= patient.name%> has not reached the target.</p>
+                </div>
+                <div class="col s12 m8 l9">
+                  <div class="row">
+                    <div class="col s12 m6 l6">
+                      
+                      <div class="sample-chart-wrapper">
+                        <canvas id="pieChartSample" ></canvas>
+                      </div>
+                      <p class="header center">Latest Session</p>
+                    </div>
+                    <div class="col s12 m6 l6">
+                      <div class="sample-chart-wrapper">
+                        <canvas id="doughnutChartSample" ></canvas>
+                      </div>
+                      <p class="header center">All Sessions</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            
+
+            <div class="divider"></div>
+            <!--Bar Chart-->
+            <div id="chartjs-bar-chart" class="section">
+              <h4 class="header">Comparison with others</h4>
+              <div class="row">
+                <div class="col s12 m4 l3">
+                  <p>Compare <%= patient.name%>'s(Gender: <%=patient.gender%>, Age: <%=patient.age%>) performance with other people in different age groups</p>
+                  <p><span style="color:#cedee6">"For Male"</span></p>
+                  <p><span style="color:#e3e3e3">"For Female"</span></p>
+                </div>
+                <div class="col s12 m8 l9">
+                  <div class="sample-chart-wrapper">
+                    <canvas id="barChartSample" height="120"></canvas>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <!--Pie & Doughnut Charts-->
+            
+        </div>
+                <!--/ profile-page-wall-posts -->
+                </div>
+              <!--/ profile-page-wall -->
+
+            </div>
+          </div>
+        </div>
+        </div>
+        <!--end container-->
+      </section>
+      <!-- END CONTENT -->
+
+<!-- START FOOTER -->
+  <footer class="page-footer" style="padding:0">
+    <div class="footer-copyright">
+      <div class="container" >
+        <span>Copyright © 2017 <a class="grey-text text-lighten-4" href="https://webdevzero2hero-eaglegogogo.c9users.io/" target="_blank">Yige Sun</a> All rights reserved.</span>
+        <span class="right"> Design and Developed by <a class="grey-text text-lighten-4" href="https://webdevzero2hero-eaglegogogo.c9users.io">Yige Sun</a></span>
+        </div>
+    </div>
+  </footer>
+    <!-- END FOOTER -->
+  
+ <!-- ================================================
+    Scripts
+    ================================================ -->
+    
+    <!-- jQuery Library -->
+    <script type="text/javascript" src="/js/plugins/jquery-1.11.2.min.js"></script>    
+    <!--materialize js-->
+    <script type="text/javascript" src="/js/materialize.js"></script>
+    <!--prism-->
+    <script type="text/javascript" src="/js/plugins/prism/prism.js"></script>
+    <!--scrollbar-->
+    <script type="text/javascript" src="/js/plugins/perfect-scrollbar/perfect-scrollbar.min.js"></script>
+    <!-- chartist -->
+    <script type="text/javascript" src="/js/plugins/chartist-js/chartist.min.js"></script>  
+    <!-- chartjs -->
+    <script type="text/javascript" src="/js/plugins/chartjs/chart.min.js"></script>
+    <!--<script type="text/javascript" src="/js/plugins/chartjs/chartjs-sample-chart.js"></script>-->
+    <!-- sparkline -->
+    <script type="text/javascript" src="/js/plugins/sparkline/jquery.sparkline.min.js"></script>
+    <script type="text/javascript" src="/js/plugins/sparkline/sparkline-script.js"></script>
+    
+    <!-- google map api -->
+    <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAAZnaZBXLqNBRXjd-82km_NO7GUItyKek"></script>
+    
+    <script>
+      // Google Maps  
+      $('#map-canvas').addClass('loading');
+      var flightPlanCoordinates = [];
+        
+        //backend js starts
+        <% currentRecords.forEach(function(record){ %>
+           
+           <% if(record.dateapp==20170604){ %>
+                   <% for(var i = 0; i < record.coordinates.length;){ %>
+                       flightPlanCoordinates.push({lat:<%=record.coordinates[i]%>, lng:<%=record.coordinates[i+1]%>});
+                       <% i=i+2; %>
+                   <% } %>
+                     
+           <% }; %>
+        <% }); %>
+        //backed js ends
+        var settings = {
+                          zoom: 15,
+                          center: {lat: -37.7963689000 , lng: 144.9611738000},
+                          mapTypeId: google.maps.MapTypeId.ROADMAP,
+                          mapTypeControl: false,
+                          scrollwheel: false,
+                          draggable: true,
+                          styles: [{"featureType":"landscape.natural","elementType":"geometry.fill","stylers":[{"visibility":"on"},{"color":"#e0efef"}]},{"featureType":"poi","elementType":"geometry.fill","stylers":[{"visibility":"on"},{"hue":"#1900ff"},{"color":"#c0e8e8"}]},{"featureType":"road","elementType":"geometry","stylers":[{"lightness":100},{"visibility":"simplified"}]},{"featureType":"road","elementType":"labels","stylers":[{"visibility":"off"}]},{"featureType":"transit.line","elementType":"geometry","stylers":[{"visibility":"on"},{"lightness":700}]},{"featureType":"water","elementType":"all","stylers":[{"color":"#7dcdcd"}]}],
+                          mapTypeControlOptions: {style: google.maps.MapTypeControlStyle.DROPDOWN_MENU},
+                          navigationControl: false,
+                          navigationControlOptions: {style: google.maps.NavigationControlStyle.SMALL},            
+                      };
+                      var map = new google.maps.Map(document.getElementById("map-canvas"), settings);
+                    
+        
+        var flightPath = new google.maps.Polyline({
+          path: flightPlanCoordinates,
+          geodesic: true,
+          strokeColor: '#FF0000',
+          strokeOpacity: 1.0,
+          strokeWeight: 2
+        });
+
+        flightPath.setMap(map);
+
+    </script>
+    
+    <!--LineChart-->
+    <script>
+      var LineChartSampleData = {
+        //   labels: ["January", "February", "March", "April", "May", "June", "July"],
+           labels: [],
+           datasets: [{
+           label: "My First dataset",
+           fillColor: "rgba(220,220,220,0.2)",
+           strokeColor: "rgba(220,220,220,1)",
+           pointColor: "rgba(220,220,220,1)",
+           pointStrokeColor: "#fff",
+           pointHighlightFill: "#fff",
+           pointHighlightStroke: "rgba(220,220,220,1)",
+        //   data: [65, 59, 80, 81, 56, 55, 40]
+           data: []
+          }, {
+           label: "My Second dataset",
+           fillColor: "rgba(151,187,205,0.2)",
+           strokeColor: "rgba(151,187,205,1)",
+           pointColor: "rgba(151,187,205,1)",
+           pointStrokeColor: "#fff",
+           pointHighlightFill: "#fff",
+           pointHighlightStroke: "rgba(151,187,205,1)",
+        //   data: [28, 48, 40, 19, 86, 27, 90]
+           data: []
+  }]
+ };
+ 
+  <% currentRecords.forEach(function(currentRecord){ %>
+            LineChartSampleData.labels.push("<%= moment(currentRecord.date).format('MMDD') %>"); 
+            LineChartSampleData.datasets[0].data.push("<%= currentRecord.target %>");
+            LineChartSampleData.datasets[1].data.push("<%= currentRecord.distance %>");
+  <% }); %>
+  
+  var lineChartSample = new Chart(document.getElementById("lineChartSample").getContext("2d")).Line(LineChartSampleData,{
+   responsive:true
+  });
+  
+    </script>
+  
+  <!--<BarChart>-->
+    <script>
+       var BarChartSampleData = {
+              labels: ["Patient","31-40","41-50","51-60","61-70","71-80","81-90"],
+              <% if(patient.gender == "Male") { %>
+                     datasets: [
+                  {
+                      label: "Male",
+                      fillColor: "rgba(151,187,205,0.5)",
+                      strokeColor: "rgba(151,187,205,0.8)",
+                      highlightFill: "rgba(151,187,205,0.75)",
+                      highlightStroke: "rgba(151,187,205,1)",
+                      data: [<%= patient.average %>, <%= average31 %>, <%= average41 %>, <%= average51 %>, <%= average61 %>, <%= average71 %>, <%= average81 %>]
+                  },
+                  {
+                      label: "Female",
+                      fillColor: "rgba(220,220,220,0.5)",
+                      strokeColor: "rgba(220,220,220,0.8)",
+                      highlightFill: "rgba(220,220,220,0.75)",
+                      highlightStroke: "rgba(220,220,220,1)",
+                      data: [0, <%= averagef31 %>, <%= averagef41 %>, <%= averagef51 %>, <%= averagef61 %>, <%= averagef71 %>, <%= averagef81 %>]
+                  }
+              ]
+                    <% } else { %>
+                     datasets: [
+                  {
+                      label: "Male",
+                      fillColor: "rgba(151,187,205,0.5)",
+                      strokeColor: "rgba(151,187,205,0.8)",
+                      highlightFill: "rgba(151,187,205,0.75)",
+                      highlightStroke: "rgba(151,187,205,1)",
+                      data: [0, <%= average31 %>, <%= average41 %>, <%= average51 %>, <%= average61 %>, <%= average71 %>, <%= average81 %>]
+                  },
+                  {
+                      label: "Female",
+                      fillColor: "rgba(220,220,220,0.5)",
+                      strokeColor: "rgba(220,220,220,0.8)",
+                      highlightFill: "rgba(220,220,220,0.75)",
+                      highlightStroke: "rgba(220,220,220,1)",
+                      data: [<%= patient.average %>, <%= averagef31 %>, <%= averagef41 %>, <%= averagef51 %>, <%= averagef61 %>, <%= averagef71 %>, <%= averagef81 %>]
+                  }
+              ]
+                    <% } %>
+             
+          };
+    var barChartSample = new Chart(document.getElementById("barChartSample").getContext("2d")).Bar(BarChartSampleData,{
+   responsive:true
+  });
+        
+      
+    </script>
+    <!--PieChart-->
+    <script>
+    <% function findNumOfFinished(array){ %>
+            <% var number=0; %>
+            <% array.forEach(function(arr){ %>
+            <%  if(arr.distance>=arr.target){ %>
+            <%       number++ %>
+            <%   } %>
+            <% }); %>
+            <% return number; %>
+        <% } %>
+     
+        <% if(currentRecords[0]==null){ %>
+            <% var numFinished = 0; %> 
+            <% var numUnfinished = 0; %> 
+        <% } else { %>
+            <% var numFinished = findNumOfFinished(currentRecords); %>
+            <% var numUnfinished = currentRecords[0].period-numFinished; %>
+        <% } %>
+      
+      var PieDoughnutChartSampleData = [
+    {
+        value: <%= numFinished %>,
+        color: "#46BFBD",
+        highlight: "#FF5A5E",
+        label: "Good Days"
+    },
+    {
+        value: <%= numUnfinished %>,
+        color:"#F7464A",
+        highlight: "#5AD3D1",
+        label: "Bad Days"
+    }
+  ]
+  
+  var PieDoughnutChartSampleData2 = [
+    {
+        value: <%= gooddays %>,
+        color: "#46BFBD",
+        highlight: "#FF5A5E",
+        label: "Good Days"
+    },
+    {
+        value: <%= baddays %>,
+        color:"#F7464A",
+        highlight: "#5AD3D1",
+        label: "Bad Days"
+    }
+  ]
+  var pieChartSample = new Chart(document.getElementById("pieChartSample").getContext("2d")).Pie(PieDoughnutChartSampleData,{
+   responsive:true
+  });
+  
+  var doughnutChartSample = new Chart(document.getElementById("doughnutChartSample").getContext("2d")).Pie(PieDoughnutChartSampleData2,{
+   responsive:true
+  });
+  
+  
+        
+  
+      
+    </script>
+    <!--google map-->
+    <!--<script type="text/javascript" src="/js/plugins/google-map/google-map-script.js"></script>-->
+    <!--plugins.js - Some Specific JS codes for Plugin Settings-->
+    <script type="text/javascript" src="/js/plugins.js"></script>
+    <!--custom-script.js - Add your own theme custom JS-->
+    <script type="text/javascript" src="/js/custom-script.js"></script>
+
+    
+</body>
+
+</html>
